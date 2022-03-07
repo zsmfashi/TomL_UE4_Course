@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "TCharacter.generated.h"
 
@@ -28,10 +30,16 @@ public:
 	ATCharacter();
 	
 protected:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> projectileClass;
+
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void moveForward(float v);
+	void moveRight(float v);
+	void PAttack();
 
 public:	
 	// Called every frame
