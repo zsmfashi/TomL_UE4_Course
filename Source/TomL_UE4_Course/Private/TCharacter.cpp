@@ -16,6 +16,8 @@ ATCharacter::ATCharacter()
 	this->CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	this->CameraComp->SetupAttachment(this->springArmComp);
 	
+	this->InteractionComp = CreateDefaultSubobject<UTInteractionComponent>("InteractionComp");
+
 	this->bUseControllerRotationYaw = false;
 	this->GetCharacterMovement()->bOrientRotationToMovement = true;
 }
@@ -48,6 +50,13 @@ void ATCharacter::moveRight(float v)
 
 void ATCharacter::PAttack()
 {
+	this->PlayAnimMontage(this->AttackAnim);
+
+	this->GetWorldTimerManager().SetTimer(this->TimerHandle_PAttack, this, &ATCharacter::PAttack_Fire, 0.2);
+}
+
+void ATCharacter::PAttack_Fire()
+{
 	FVector handLocation = this->GetMesh()->GetSocketLocation("Muzzle_01");
 
 	FTransform transform = FTransform(this->GetControlRotation(), handLocation);
@@ -55,8 +64,12 @@ void ATCharacter::PAttack()
 	FActorSpawnParameters spawnParameters;
 	spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-
 	this->GetWorld()->SpawnActor<AActor>(this->projectileClass, transform, spawnParameters);
+}
+
+void ATCharacter::PInteraction()
+{
+	this->InteractionComp->PrimaryInteract();
 }
 
 // Called every frame
@@ -78,5 +91,6 @@ void ATCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAction("PAttack", IE_Pressed, this, &ATCharacter::PAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ATCharacter::Jump);
+	PlayerInputComponent->BindAction("PInteraction", IE_Pressed, this, &ATCharacter::PInteraction);
 }
 

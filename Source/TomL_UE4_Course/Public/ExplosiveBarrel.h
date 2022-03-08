@@ -10,6 +10,8 @@
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "ExplosiveBarrel.generated.h"
 
+class ATMagic;
+
 UCLASS()
 class TOML_UE4_COURSE_API AExplosiveBarrel : public AActor
 {

@@ -2,6 +2,7 @@
 
 
 #include "ExplosiveBarrel.h"
+#include "TMagic.h"
 
 // Sets default values
 AExplosiveBarrel::AExplosiveBarrel()
@@ -24,7 +25,11 @@ AExplosiveBarrel::AExplosiveBarrel()
 void AExplosiveBarrel::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	UE_LOG(LogTemp, Log, TEXT("overlap"));
-	this->fireRadialForce();
+	if (Cast<ATMagic>(OtherActor))
+	{
+		this->fireRadialForce();
+	}
+	
 }
 
 void AExplosiveBarrel::fireRadialForce()

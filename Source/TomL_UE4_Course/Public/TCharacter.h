@@ -8,11 +8,13 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "TInteractionComponent.h"
 
 #include "TCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
+class UAnimMontage;
 
 UCLASS()
 class TOML_UE4_COURSE_API ATCharacter : public ACharacter
@@ -26,20 +28,33 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* springArmComp;
 
+	UPROPERTY(VisibleAnywhere)
+	UTInteractionComponent* InteractionComp;
+
 	// Sets default values for this character's properties
 	ATCharacter();
 	
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> projectileClass;
 
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage* AttackAnim;
+
+	FTimerHandle TimerHandle_PAttack;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void moveForward(float v);
+
 	void moveRight(float v);
+
 	void PAttack();
+
+	void PAttack_Fire();
+
+	void PInteraction();
 
 public:	
 	// Called every frame
